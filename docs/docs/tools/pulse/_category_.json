@@ -1,0 +1,8 @@
+{
+  "label": "Pulse",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "description": "Tools for retrieving information about Pulse metrics."
+  }
+}

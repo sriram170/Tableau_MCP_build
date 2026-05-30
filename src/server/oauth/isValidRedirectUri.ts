@@ -1,0 +1,31 @@
+export function isValidRedirectUri(redirectUri: unknown): boolean {
+  if (typeof redirectUri !== 'string') {
+    return false;
+  }
+
+  try {
+    const url = new URL(redirectUri);
+
+    // Allow HTTPS URLs
+    if (url.protocol === 'https:') {
+      return true;
+    }
+
+    // Allow HTTP only for loopback hosts (RFC 8252 §7.3).
+    // Note: Node's URL parser keeps IPv6 hostnames bracketed (e.g. '[::1]').
+    if (url.protocol === 'http:') {
+      return (
+        url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.hostname === '[::1]'
+      );
+    }
+
+    // Allow custom schemes (like systemprompt://)
+    if (url.protocol.match(/^[a-zA-Z][a-zA-Z0-9+.-]*:$/)) {
+      return true;
+    }
+
+    return false;
+  } catch {
+    return false;
+  }
+}
